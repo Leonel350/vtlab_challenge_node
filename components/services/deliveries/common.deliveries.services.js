@@ -43,9 +43,9 @@ const create = async (req) => {
         message: `An error has occurred trying to create the delivery:
           ${JSON.stringify(e, null, 2)}`
       }
-    }
+    };
   }
-}
+};
 
 const findOne = async (req) => {
   let delivery = await Deliveries.findOne({_id: req.body.id});
@@ -55,13 +55,36 @@ const findOne = async (req) => {
       data: {
         message: `We couldn't find a delivery with the sent ID`
       }
-    }
+    };
   }
   return delivery;
-}
+};
+
+const deleteFiltered = async (req) => {
+  const {productId} = req.body;
+  if(!productId){
+    throw {
+      code: 400,
+      data: {
+        message: 'A filter is required to delete deliveries'
+      }
+    };
+  }
+  const removedInfo = await Deliveries.remove({ products: { $in: [ productId ] } });
+  if (removedInfo.deletedCount==0) {
+    throw {
+      code: 400,
+      data: {
+        message: 'No deliveries found with the sent product id'
+      }
+    };
+  }
+  return removedInfo;
+};
 
 export default {
   find,
   create,
-  findOne
-}
+  findOne,
+  deleteFiltered
+};

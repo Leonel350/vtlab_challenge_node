@@ -8,11 +8,11 @@ const getTrackingInfo = async (req) => {
       data: {
         message: `We couldn't find a delivery with the sent ID`
       }
-    }
+    };
   }
   return delivery;
-}
+};
 
 export default {
   getTrackingInfo
-}
+};
