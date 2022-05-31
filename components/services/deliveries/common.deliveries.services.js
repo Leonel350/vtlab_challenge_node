@@ -70,7 +70,7 @@ const deleteFiltered = async (req) => {
       }
     };
   }
-  const removedInfo = await Deliveries.remove({ products: { $in: [ productId ] } });
+  const removedInfo = await Deliveries.deleteMany({ products: { $in: [ productId ] } });
   if (removedInfo.deletedCount==0) {
     throw {
       code: 400,
